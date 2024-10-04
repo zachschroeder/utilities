@@ -9,6 +9,19 @@ function git-delete-branches-gone-from-remote
 	git fetch -p; git branch -vv | Where-Object{$_ -match 'origin/.*: gone]'} | ForEach-Object { ($_ -split '\s')[2] } | ForEach-Object { git branch -D $_ }
 }
 
+function rmrf
+{
+	param(
+		[Parameter(Mandatory=$true)]
+		[string]$path
+	)
+	if(Test-Path $path) {
+		Remove-Item -Recurse -Force $path
+	} else {
+		Throw "Could not find path '$path'"
+	}
+}:
+
 function search
 {
 	param (
